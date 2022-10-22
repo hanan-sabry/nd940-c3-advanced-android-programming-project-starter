@@ -28,5 +28,7 @@ class DetailActivity : AppCompatActivity() {
         binding.contentDetail.okButton.setOnClickListener{
             finish()
         }
+
+//        binding.contentDetail.motionLayout.transitionToEnd()
     }
 }
