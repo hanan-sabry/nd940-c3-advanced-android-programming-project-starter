@@ -65,14 +65,15 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/image_bg" />
 
-        <Button
+        <com.udacity.LoadingButton
             android:id="@+id/custom_button"
             android:layout_width="0dp"
             android:layout_height="60dp"
             android:layout_margin="20dp"
-            android:text="Download"
-            android:textColor="@color/white"
-            android:background="@color/colorAccent"
+            app:backgroundColor="@color/colorAccent"
+            app:textColor="@color/white"
+            app:loadingColor="@color/colorPrimaryDark"
+            app:circleColor="@color/colorPrimary"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />

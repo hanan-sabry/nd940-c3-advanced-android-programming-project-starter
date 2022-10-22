@@ -19,7 +19,7 @@
             android:layout_margin="@dimen/default_margin"
             android:background="@color/colorAccent"
             android:text="OK"
-            android:textColor="#5D4037"
+            android:textColor="@color/white"
             app:layout_constraintBottom_toBottomOf="parent"
             tools:layout_editor_absoluteX="16dp" />
 

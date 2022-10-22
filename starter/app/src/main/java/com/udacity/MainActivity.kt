@@ -20,6 +20,7 @@ class MainActivity : AppCompatActivity() {
 
     private var downloadID: Long = 0
 
+    private lateinit var binding: ActivityMainBinding
     private lateinit var notificationManager: NotificationManager
     private lateinit var downloadManager: DownloadManager
     private lateinit var pendingIntent: PendingIntent
@@ -28,7 +29,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val binding = ActivityMainBinding.inflate(layoutInflater)
+        binding = ActivityMainBinding.inflate(layoutInflater)
         val view = binding.root
         setContentView(view)
         setSupportActionBar(binding.toolbar)
@@ -46,6 +47,7 @@ class MainActivity : AppCompatActivity() {
             if (null == selectedUrl) {
                 Toast.makeText(this, getString(R.string.no_file_to_download_err_msg), Toast.LENGTH_SHORT).show()
             } else {
+                binding.mainLayout.customButton.buttonState = ButtonState.Loading
                 download(selectedUrl!!)
             }
         }
@@ -62,6 +64,7 @@ class MainActivity : AppCompatActivity() {
     private val receiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent?) {
             if (intent?.action == DownloadManager.ACTION_DOWNLOAD_COMPLETE) {
+                binding.mainLayout.customButton.buttonState = ButtonState.Completed
                 val id = intent.getLongExtra(DownloadManager.EXTRA_DOWNLOAD_ID, -1)
                 val status = getDownloadFileStatus(id)
 
