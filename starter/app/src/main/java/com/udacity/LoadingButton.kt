@@ -4,6 +4,7 @@ import android.animation.ValueAnimator
 import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Paint
+import android.graphics.Rect
 import android.graphics.RectF
 import android.util.AttributeSet
 import android.view.View
@@ -23,6 +24,7 @@ class LoadingButton @JvmOverloads constructor(
     private val buttonPaint: Paint = Paint()
     private val loadingBarPaint: Paint = Paint()
     private val textPaint: Paint = Paint()
+    private val textBounds = Rect()
 
     var loadingDuration: Long = 1000;
 
@@ -35,7 +37,7 @@ class LoadingButton @JvmOverloads constructor(
         repeatCount = ValueAnimator.INFINITE
     }
 
-    var buttonState: ButtonState by Delegates.observable<ButtonState>(ButtonState.Completed) { p, old, new ->
+    var buttonState: ButtonState by Delegates.observable<ButtonState>(ButtonState.Completed) { _, _, new ->
         when (new) {
             ButtonState.Loading -> {
                 buttonText = resources.getString(R.string.button_loading)
@@ -61,7 +63,7 @@ class LoadingButton @JvmOverloads constructor(
         loadingBarPaint.style = Paint.Style.FILL
         loadingBarPaint.color = ContextCompat.getColor(context, R.color.colorPrimary)
 
-        textPaint.textSize = 75f
+//        textPaint.textSize = 75f / resources.displayMetrics.density
         textPaint.textAlign = Paint.Align.CENTER
 
         context.withStyledAttributes(attrs, R.styleable.LoadingButton) {
@@ -70,7 +72,9 @@ class LoadingButton @JvmOverloads constructor(
             buttonPaint.color = backgroundColor
 
             val buttonTextColor = getColor(R.styleable.LoadingButton_textColor, 0)
+            val buttonTextSize = getDimensionPixelSize(R.styleable.LoadingButton_textSize, 0)
             textPaint.color = buttonTextColor
+            textPaint.textSize = buttonTextSize.toFloat()
         }
     }
 
@@ -90,27 +94,33 @@ class LoadingButton @JvmOverloads constructor(
             loadingBarPaint
         )
 
-        val circleRadius = 100f
-        val circleLeft = (widthSize.toFloat() - widthSize / 5)
+
+        textPaint.getTextBounds(buttonText, 0, buttonText.length, textBounds)
+        val textHeight = textBounds.height()
+        val textWidth = textBounds.width()
+
+        canvas?.drawText(
+            buttonText,
+            widthSize.toFloat() / 2,
+            (heightSize.toFloat() / 2) + (textHeight / 2),
+            textPaint
+        )
+
+        val circleRadius = 75f
+//        val circleLeft = (widthSize.toFloat() - widthSize / 5)
+        val circleLeft = widthSize.toFloat() - textWidth/2
         val circleRight = circleLeft + circleRadius
-        val circleTop = 50
+        val circleTop = (heightSize - circleRadius) / 2
         val circleBottom = circleTop + circleRadius
         canvas?.drawArc(
             circleLeft,
-            circleTop.toFloat(),
+            circleTop,
             circleRight,
             circleBottom,
             0f,
             sweepAngle.toFloat(),
             true,
             loadingCirclePaint
-        )
-
-        canvas?.drawText(
-            buttonText,
-            widthSize.toFloat() / 2,
-            25 + heightSize.toFloat() / 2,
-            textPaint
         )
 
     }

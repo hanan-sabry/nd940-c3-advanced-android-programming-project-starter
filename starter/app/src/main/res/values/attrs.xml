@@ -3,7 +3,6 @@
     <declare-styleable name="LoadingButton">
         <attr name="backgroundColor" format="color" />
         <attr name="textColor" format="color" />
-        <attr name="loadingColor" format="color"/>
-        <attr name="circleColor" format="color"/>
+        <attr name="textSize" format="dimension"/>
     </declare-styleable>
 </resources>
